@@ -1,4 +1,4 @@
-const { updateQuizCards, sortQuizCards, updateCardRating, handleDelete, handleEdit } = require('./script.js');
+const { updateQuizCards, sortQuizCards, updateCardRating, handleDelete, handleEdit } = require('./script');
 
 // Simulierte Quizkarten
 const quizCards = [
@@ -7,15 +7,15 @@ const quizCards = [
     { question: "Was ist 5 + 3?", answer: "8", rating: null }
 ];
 
-describe('Quiz App Funktionstests', () => {
+describe('Quizkarten Funktionen', () => {
 
     // Test für updateQuizCards
-    test('updateQuizCards sollte die Karte am Index aktualisieren', () => {
+    test('updateQuizCards sollte die Karte am angegebenen Index aktualisieren', () => {
         const newCard = { question: "Neue Frage", answer: "Neue Antwort", rating: null };
         const updatedCards = updateQuizCards(quizCards, 1, newCard);
 
         expect(updatedCards[1]).toEqual(newCard);
-        expect(updatedCards[0]).toEqual(quizCards[0]); // Sicherstellen, dass andere Karten unverändert bleiben
+        expect(updatedCards[0]).toEqual(quizCards[0]); // Sicherstellen, dass die anderen Karten unverändert bleiben
     });
 
     // Test für sortQuizCards
@@ -38,12 +38,13 @@ describe('Quiz App Funktionstests', () => {
         const updatedCards = updateCardRating(quizCards, 2, 'great');
         
         expect(updatedCards[2].rating).toBe('great');
-        expect(updatedCards[1].rating).toBe(null); // Sicherstellen, dass andere Karten unverändert bleiben
+        expect(updatedCards[1].rating).toBe(null); // Sicherstellen, dass die anderen Karten unverändert bleiben
     });
 
     // Test für handleDelete
     test('handleDelete sollte die Karte löschen', () => {
         const updatedCards = quizCards.filter((_, i) => i !== 1);
+
         expect(updatedCards.length).toBe(2);
         expect(updatedCards[0].question).toBe('Was ist die Hauptstadt von Deutschland?');
         expect(updatedCards[1].question).toBe('Was ist 5 + 3?');

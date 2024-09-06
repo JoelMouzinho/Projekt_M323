@@ -11,9 +11,9 @@ const updateQuizCards = (cards, index, newCard) =>
 
 const sortQuizCards = (cards) =>
     [
-        ...cards.filter(card => card.rating === 'bad'),
-        ...cards.filter(card => card.rating === 'good'),
-        ...cards.filter(card => card.rating === 'great'),
+        ...cards.filter(card => card.rating === 0),   // bad
+        ...cards.filter(card => card.rating === 1),   // good
+        ...cards.filter(card => card.rating === 2),   // great
         ...cards.filter(card => card.rating === null)
     ];
 
@@ -42,9 +42,24 @@ const renderCardList = (cards) => {
         const cardDiv = document.createElement('div');
         cardDiv.className = "p-4 bg-white shadow rounded-lg";
 
+        let ratingText;
+        switch (card.rating) {
+            case 0:
+                ratingText = "bad";
+                break;
+            case 1:
+                ratingText = "good";
+                break;
+            case 2:
+                ratingText = "great";
+                break;
+            default:
+                ratingText = 'unbewertet';
+        }
+
         cardDiv.innerHTML = `
             <h3 class="text-lg font-bold">${card.question}</h3>
-            <p class="text-gray-500">${card.rating || 'unbewertet'}</p>
+            <p class="text-gray-500">${ratingText}</p>
             <div class="mt-2">
                 <button class="bg-red-500 text-white px-2 py-1 rounded" onclick="handleDelete(${index})">Löschen</button>
                 <button class="bg-yellow-500 text-white px-2 py-1 ml-2 rounded" onclick="handleEdit(${index})">Bearbeiten</button>
@@ -65,18 +80,27 @@ const quizFlow = (cards, currentCardIndex = 0) => {
     // Kartenliste anzeigen
     renderCardList(sortedCards);
 
+    let answerRevealed = false; // Zustand, um zu überprüfen, ob die Antwort angezeigt wurde
+
     // Funktion zum Bewerten der Karte
     const handleRating = (rating) => {
-        const newCards = updateCardRating(cards, currentCardIndex, rating);
-        const nextIndex = (currentCardIndex + 1) % newCards.length;
-        quizFlow(newCards, nextIndex); // Nächster Zustand wird weitergegeben
+        if (answerRevealed) { // Bewertung nur erlauben, wenn die Antwort angezeigt wurde
+            const newCards = updateCardRating(cards, currentCardIndex, rating);
+            const nextIndex = (currentCardIndex + 1) % newCards.length;
+            quizFlow(newCards, nextIndex); // Nächster Zustand wird weitergegeben
+        } else {
+            alert("Bitte zeige zuerst die Antwort an, bevor du bewertest.");
+        }
     };
 
     // Event-Listener für Bewertungen
-    document.getElementById('bad').onclick = () => handleRating('bad');
-    document.getElementById('good').onclick = () => handleRating('good');
-    document.getElementById('great').onclick = () => handleRating('great');
-    document.getElementById('show-answer').onclick = () => answerElement.classList.toggle('hidden');
+    document.getElementById('bad').onclick = () => handleRating(0);  // bad = 0
+    document.getElementById('good').onclick = () => handleRating(1); // good = 1
+    document.getElementById('great').onclick = () => handleRating(2); // great = 2
+    document.getElementById('show-answer').onclick = () => {
+        answerElement.classList.toggle('hidden');
+        answerRevealed = !answerRevealed; // Zustand der Antwortanzeige umschalten
+    };
 };
 
 // Lösch- und Bearbeitungsfunktionen
