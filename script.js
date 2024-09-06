@@ -110,3 +110,5 @@ document.getElementById('card-form').addEventListener('submit', (e) => {
 // Initialisierung des Quizflows und der Kartenliste
 totalCardsElement.innerText = quizCards.length;
 quizFlow(quizCards);
+
+module.exports = { updateQuizCards, sortQuizCards, updateCardRating, handleDelete, handleEdit };

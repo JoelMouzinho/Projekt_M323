@@ -1,0 +1,22 @@
+{
+  "name": "projekt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoelMouzinho/Projekt_M323.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoelMouzinho/Projekt_M323/issues"
+  },
+  "homepage": "https://github.com/JoelMouzinho/Projekt_M323#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
